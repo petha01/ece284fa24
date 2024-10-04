@@ -23,12 +23,6 @@ assign out = psum_q;
 
 // Your code goes here
 
-reg signed [psum_bw-1:0] prod, prod2s;
-
-assign prod2s = a_q * b_q;
-assign prod[psum_bw-2:0] = a_q[bw-2:0] * b_q[bw-2:0];
-assign prod[psum_bw-1] = a_q[bw-1] ^ b_q[bw-1];
-
 always @(posedge clk) begin
     if (reset) begin
         psum_q <= 1'b0;
@@ -40,26 +34,26 @@ always @(posedge clk) begin
         b_q <= B;
         if (format) begin
             // Handle sign + magnitude
-            if (prod[psum_bw-1] ^ psum_q[psum_bw-1]) begin
+            if (a_q[bw-1] ^ b_q[bw-1] ^ psum_q[psum_bw-1]) begin
                 // Handle different signs
-                if (psum_q[psum_bw-2:0] > prod[psum_bw-2:0]) begin
+                if (psum_q[psum_bw-2:0] > (a_q[bw-2:0] * b_q[bw-2:0])) begin
                     psum_q[psum_bw-1] <= psum_q[psum_bw-1];
-                    psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] - prod[psum_bw-2:0];
+                    psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] - (a_q[bw-2:0] * b_q[bw-2:0]);
                 end
                 else begin
-                    psum_q[psum_bw-1] <= prod[psum_bw-1];
-                    psum_q[psum_bw-2:0] <= prod[psum_bw-2:0] - psum_q[psum_bw-2:0];
+                    psum_q[psum_bw-1] <= a_q[bw-1] ^ b_q[bw-1];
+                    psum_q[psum_bw-2:0] <= (a_q[bw-2:0] * b_q[bw-2:0]) - psum_q[psum_bw-2:0];
                 end
             end
             else begin
                 // Handle same sign
                 psum_q[psum_bw-1] <= psum_q[psum_bw-1];
-                psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] + prod[psum_bw-2:0];
+                psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] + (a_q[bw-2:0] * b_q[bw-2:0]);
             end
         end
         else begin
             // Handle 2's complement
-            psum_q <= psum_q + prod2s;
+            psum_q <= psum_q + a_q * b_q;
         end
     end
 end
