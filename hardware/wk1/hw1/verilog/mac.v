@@ -29,7 +29,7 @@ assign prod2s = a_q * b_q;
 assign prod[psum_bw-2:0] = a_q[bw-2:0] * b_q[bw-2:0];
 assign prod[psum_bw-1] = a_q[bw-1] ^ b_q[bw-1];
 
-always_ff @(posedge clk) begin
+always @(posedge clk) begin
     if (reset) begin
         psum_q <= 1'b0;
         a_q <= 1'b0;
@@ -42,19 +42,19 @@ always_ff @(posedge clk) begin
             // Handle sign + magnitude
             if (prod[psum_bw-1] ^ psum_q[psum_bw-1]) begin
                 // Handle different signs
-                if (psum[psum_bw-2:0] > prod[psum_bw-2:0]) begin
-                    psum[psum_bw-1] <= psum[psum_bw-1];
-                    psum[psum_bw-2:0] <= psum[psum_bw-2:0] - prod[psum_bw-2:0];
+                if (psum_q[psum_bw-2:0] > prod[psum_bw-2:0]) begin
+                    psum_q[psum_bw-1] <= psum_q[psum_bw-1];
+                    psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] - prod[psum_bw-2:0];
                 end
                 else begin
-                    psum[psum_bw-1] <= prod[psum_bw-1];
-                    psum[psum_bw-2:0] <= prod[psum_bw-2:0] - psum[psum_bw-2:0];
+                    psum_q[psum_bw-1] <= prod[psum_bw-1];
+                    psum_q[psum_bw-2:0] <= prod[psum_bw-2:0] - psum_q[psum_bw-2:0];
                 end
             end
             else begin
                 // Handle same sign
-                psum[psum_bw-1] <= psum[psum_bw-1];
-                psum[psum_bw-2:0] <= psum[psum_bw-2:0] + prod[psum_bw-2:0];
+                psum_q[psum_bw-1] <= psum_q[psum_bw-1];
+                psum_q[psum_bw-2:0] <= psum_q[psum_bw-2:0] + prod[psum_bw-2:0];
             end
         end
         else begin
