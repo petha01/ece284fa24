@@ -62,7 +62,7 @@ endfunction
 
 
 function [3:0] x_bin ;
-  input unsigned integer x;
+  input integer x;
   begin
     if (x > 7) begin
       x_bin[3] = 1;
@@ -133,7 +133,7 @@ initial begin
 
   $dumpfile("mac_tb.vcd");
   $dumpvars(0,mac_tb);
- u
+
   #1 clk = 1'b0;  
   #1 clk = 1'b1;  
   #1 clk = 1'b0;
@@ -150,8 +150,7 @@ initial begin
 
      a = x_bin(x_dec);
      b = w_bin(w_dec);
-    //  c = expected_out;
-    c = 0;
+     c = expected_out;
 
      expected_out = mac_predicted(a, b, c);
 
