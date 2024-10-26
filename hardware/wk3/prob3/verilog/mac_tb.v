@@ -62,16 +62,56 @@ endfunction
 
 
 function [3:0] x_bin ;
+  input unsigned integer x;
+  begin
+    if (x > 7) begin
+      x_bin[3] = 1;
+      x = x - 8;
+    end else begin
+      x_bin[3] = 0;
+    end
 
-...
+    if (x > 3) begin
+      x_bin[2] = 1;
+      x = x - 4;
+    end else begin
+      x_bin[2] = 0;
+    end
+
+    if (x > 1) begin
+      x_bin[1] = 1;
+      x = x - 2;
+    end else begin
+      x_bin[1] = 0;
+    end
+
+    if (x > 0) begin
+      x_bin[0] = 1;
+    end else begin
+      x_bin[0] = 0;
+    end
+  end
 
 endfunction
 
 
 // Below function is for verification
 function [psum_bw-1:0] mac_predicted;
-  
-...
+  input [bw-1:0] a;
+  input [bw-1:0] b;
+  input [psum_bw-1:0] c;
+
+  reg unsigned [psum_bw-1:0] a_unsigned;
+  reg signed [psum_bw-1:0] b_signed;
+  reg [psum_bw-1:0] product;
+
+  begin
+    a_unsigned = $unsigned(a);
+    b_signed = $signed(b);
+
+    product = a_unsigned * b_signed;
+    mac_predicted = c + product;
+  end
 
 endfunction
 
@@ -93,14 +133,13 @@ initial begin
 
   $dumpfile("mac_tb.vcd");
   $dumpvars(0,mac_tb);
- 
+ u
   #1 clk = 1'b0;  
   #1 clk = 1'b1;  
   #1 clk = 1'b0;
 
   $display("-------------------- Computation start --------------------");
   
-
   for (i=0; i<10; i=i+1) begin  // Data lenght is 10 in the data files
 
      #1 clk = 1'b1;
@@ -109,9 +148,10 @@ initial begin
      w_scan_file = $fscanf(w_file, "%d\n", w_dec);
      x_scan_file = $fscanf(x_file, "%d\n", x_dec);
 
-     a = x_bin(x_dec); // unsigned number
-     b = w_bin(w_dec); // signed number
-     c = expected_out;
+     a = x_bin(x_dec);
+     b = w_bin(w_dec);
+    //  c = expected_out;
+    c = 0;
 
      expected_out = mac_predicted(a, b, c);
 
