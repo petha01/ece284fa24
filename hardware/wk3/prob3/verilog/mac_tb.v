@@ -9,8 +9,14 @@ parameter psum_bw = 16;
 
 reg clk = 0;
 
-reg  [bw-1:0] a;
-reg  [bw-1:0] b;
+reg  [bw-1:0] a1;
+reg  [bw-1:0] a2;
+reg  [bw-1:0] a3;
+reg  [bw-1:0] a4;
+reg  [bw-1:0] b1;
+reg  [bw-1:0] b2;
+reg  [bw-1:0] b3;
+reg  [bw-1:0] b4;
 reg  [psum_bw-1:0] c;
 wire [psum_bw-1:0] out;
 reg  [psum_bw-1:0] expected_out = 0;
@@ -24,6 +30,7 @@ integer x_scan_file ; // file handler
 integer x_dec[3:0];
 integer w_dec[3:0];
 integer i; 
+integer j;
 integer u; 
 
 function [3:0] w_bin ;
@@ -130,10 +137,10 @@ function [psum_bw-1:0] mac_predicted_4_input;
   reg unsigned [psum_bw-1:0] a_unsigned2;
   reg unsigned [psum_bw-1:0] a_unsigned3;
   reg unsigned [psum_bw-1:0] a_unsigned4;
+  reg signed [psum_bw-1:0] w_signed1;
   reg signed [psum_bw-1:0] w_signed2;
-  reg signed [psum_bw-1:0] w_signed2;
-  reg signed [psum_bw-1:0] w_signed2;
-  reg signed [psum_bw-1:0] w_signed2;
+  reg signed [psum_bw-1:0] w_signed3;
+  reg signed [psum_bw-1:0] w_signed4;
 
   reg [psum_bw-1:0] product1;
   reg [psum_bw-1:0] product2;
@@ -154,7 +161,7 @@ function [psum_bw-1:0] mac_predicted_4_input;
     product2 = a_unsigned2 * w_signed2;
     product3 = a_unsigned3 * w_signed3;
     product4 = a_unsigned4 * w_signed4;
-    mac_predicted = c + product1 + product2 + product3 + product4;
+    mac_predicted_4_input = c + product1 + product2 + product3 + product4;
   end
 
 endfunction
@@ -194,7 +201,6 @@ initial begin
 
      #1 clk = 1'b1;
      #1 clk = 1'b0;
-     integer j;
      for (j = 0; j<4; j=j+1) begin
       w_scan_file = $fscanf(w_file, "%d\n", w_dec[j]);
       x_scan_file = $fscanf(x_file, "%d\n", x_dec[j]);
