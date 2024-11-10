@@ -19,7 +19,7 @@ module mac_row (clk, out_s, in_w, in_n, valid, inst_w, reset);
   wire [psum_bw*col-1:0] sum_out_wire;
 
   assign ab_wire[bw-1:0]   = in_w;
-  assign inst_wire[bw-1;0] = inst_w;
+  assign inst_wire[bw-1:0] = inst_w;
   assign sum_in_wire[psum_bw*col-1:0] = in_n;
   assign out_s = sum_out_wire[psum_bw*col-1:0];
   assign valid = {inst_wire[17], inst_wire[15], inst_wire[13], inst_wire[11], inst_wire[9], inst_wire[7], inst_wire[5], inst_wire[3]};
@@ -33,8 +33,8 @@ module mac_row (clk, out_s, in_w, in_n, valid, inst_w, reset);
 	 .out_e(ab_wire[bw*(i+1)-1:bw*i]),
 	 .inst_w(inst_wire[2*i-1:2*(i-1)]),
 	 .inst_e(inst_wire[2*(i+1)-1:2*i]),
-	 .in_n(sum_in_wire[[bw*i-1:bw*(i-1)]]),
-	 .out_s(sum_out_wire[[bw*i-1:bw*(i-1)]]));
+	 .in_n(sum_in_wire[bw*i-1:bw*(i-1)]),
+	 .out_s(sum_out_wire[bw*i-1:bw*(i-1)]));
   end
 
 endmodule
