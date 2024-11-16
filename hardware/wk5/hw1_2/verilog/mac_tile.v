@@ -16,7 +16,7 @@ input  reset;
 
 reg [bw-1:0] a_q;
 reg [bw-1:0] b_q;
-reg [bw-1:0] c_q;
+reg [psum_bw-1:0] c_q;
 reg [1:0] inst_q;
 reg load_ready_q;
 

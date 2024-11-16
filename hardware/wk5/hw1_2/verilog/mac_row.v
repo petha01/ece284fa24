@@ -33,8 +33,8 @@ module mac_row (clk, out_s, in_w, in_n, valid, inst_w, reset);
 	 .out_e(ab_wire[bw*(i+1)-1:bw*i]),
 	 .inst_w(inst_wire[2*i-1:2*(i-1)]),
 	 .inst_e(inst_wire[2*(i+1)-1:2*i]),
-	 .in_n(sum_in_wire[bw*i-1:bw*(i-1)]),
-	 .out_s(sum_out_wire[bw*i-1:bw*(i-1)]));
+	 .in_n(sum_in_wire[psum_bw*i-1:psum_bw*(i-1)]),
+	 .out_s(sum_out_wire[psum_bw*i-1:psum_bw*(i-1)]));
   end
 
 endmodule

@@ -14,7 +14,7 @@ module mac_array (clk, reset, out_s, in_w, in_n, inst_w, valid);
   input  [psum_bw*col-1:0] in_n;
   output [col-1:0] valid;
 
-  wire [(row+1)*2-1:0] sum_wire;
+  wire [psum_bw*col*(row+1)-1:0] sum_wire;
   wire [row*bw-1:0]    in_wire;
   wire [col*row-1:0]   valid_wire;
 
